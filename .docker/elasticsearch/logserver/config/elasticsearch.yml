@@ -1,0 +1,25 @@
+cluster:
+  name: bmi_logs
+node:
+  name: rsd_logs
+  max_local_storage_nodes: 2
+http:
+  port: 9200
+  host: 0.0.0.0
+  cors:
+      allow-origin: "http://127.0.0.1:1358"
+      enabled: true
+      allow-headers : X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+      allow-credentials: true
+bootstrap:
+  memory_lock: true
+path:
+  logs: /var/logs/elasticsearch/logserver
+  data: /var/data/elasticsearch/logserver
+transport:
+  host: 127.0.0.1
+xpack:
+  security:
+    enabled: false
+  monitoring:
+    enabled: false

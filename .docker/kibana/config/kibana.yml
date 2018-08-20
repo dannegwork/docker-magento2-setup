@@ -1,0 +1,9 @@
+server.name: kibana
+server.host:  "0"
+elasticsearch.url:  http://es-logs:9200
+xpack.monitoring.ui.container.elasticsearch.enabled: false
+xpack.security.enabled: false
+xpack.monitoring.enabled: false
+xpack.ml.enabled: false
+xpack.graph.enabled: false
+xpack.reporting.enabled: false

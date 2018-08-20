@@ -1,0 +1,34 @@
+cluster:
+  name: bmi_magento
+node:
+  name: rsd_magento
+  max_local_storage_nodes: 1
+  master: true
+http:
+  port: 9200
+  host: 0.0.0.0
+  cors:
+      # allow-origin: "http://127.0.0.1:1358"
+      allow-origin: "*"
+      enabled: true
+      # allow-headers : X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+      # allow-credentials: true
+bootstrap:
+  memory_lock: true
+path:
+  logs: /var/logs/elasticsearch/magento
+  data: /var/data/elasticsearch/magento
+transport:
+  host: 127.0.0.1
+xpack:
+  security:
+    enabled: false
+  monitoring:
+    enabled: false
+# Set the number of replicas (additional copies) of an index (1 by default):
+index:
+  number_of_shards: 1
+  number_of_replicas: 0
+  query:
+    bool:
+      max_clause_count: 10240 
