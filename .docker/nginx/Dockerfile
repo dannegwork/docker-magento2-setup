@@ -1,5 +1,5 @@
 FROM nginx:1.15
-MAINTAINER Dana Negrescu <dana.negrescu@evozon.com>
+MAINTAINER Dana Negrescu <dana.negrescu@boxalino.com>
 
 RUN apt-get update && apt-get install -y \
     curl \

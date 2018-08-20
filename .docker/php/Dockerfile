@@ -1,5 +1,5 @@
 FROM php:7.0.20-fpm
-MAINTAINER Dana Negrescu <dana.negrescu@evozon.com>
+MAINTAINER Dana Negrescu <dana.negrescu@boxalino.com>
 
 # install libs according to Magento2 documentation&requirements
 RUN apt-get update && apt-get install -y \

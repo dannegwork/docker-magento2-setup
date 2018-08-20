@@ -1,5 +1,5 @@
 FROM php:7.0.20-cli
-MAINTAINER Dana Negrescu <dana.negrescu@evozon.com>
+MAINTAINER Dana Negrescu <dana.negrescu@boxalino.com>
 
 # # Install dependencies
 RUN apt-get update \

@@ -1,5 +1,5 @@
 FROM rabbitmq:3.6.9
-MAINTAINER Dana Negrescu <dana.negrescu@evozon.com>
+MAINTAINER Dana Negrescu <dana.negrescu@boxalino.com>
 
 RUN apt-get install -yqq \
     rabbitmq-server \
