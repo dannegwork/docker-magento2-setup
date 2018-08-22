@@ -21,7 +21,7 @@ services:
       - redis
       - memcached
       - rabbitmq
-      - elasticsearch
+      - elasticsearch-magento
     tty: true
     environment:
       SERVER_NAME: "dev-m2.bxl.com"
@@ -46,8 +46,6 @@ services:
     links:
       - code-magento
       - mailcatcher
-    depends_on:
-      - php
     environment:
         PHP_IDE_CONFIG: "serverName=dev-m2.bxl.com"
 
@@ -96,8 +94,6 @@ services:
     volumes:
       - ./.docker/cli/conf/php.ini:/usr/local/etc/php/conf.d/php.ini
       - $HOME/.ssh/id_rsa:/root/.ssh/id_rsa
-    depends_on:
-      - cli
     environment:
         PROJECT_ROOT: "/var/www/magento"
     env_file:
@@ -177,7 +173,6 @@ services:
     container_name: bxl_m2_phpmyadmin
     volumes_from:
       - dbdata-magento
-      - dbdata-symfony
     ports:
       - 8080:80
     env_file:

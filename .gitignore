@@ -2,8 +2,8 @@
 .docker/database/
 .env
 auth.json
-docker/php/logs/
-docker/cli/logs/
+.docker/php/logs/
+.docker/cli/logs/
 src/*
-docker/nginx/logs/
-
+.docker/nginx/logs/
+.docker/rabbitmq/data

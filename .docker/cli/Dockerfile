@@ -1,5 +1,5 @@
 FROM php:7.0.20-cli
-MAINTAINER Dana Negrescu <dana.negrescu@boxalino.com>
+MAINTAINER Dana Negrescu <dana.negrescu@evozon.com>
 
 # # Install dependencies
 RUN apt-get update \
@@ -63,14 +63,13 @@ RUN git clone -b php7 https://github.com/php-memcached-dev/php-memcached /usr/sr
  && rm -rf /usr/src/php/ext/memcached
 
 ADD bin/* /usr/local/bin/
-RUN chmod +x /usr/local/bin/install
 RUN chmod +x /usr/local/bin/environment
-
+RUN chmod +x /usr/local/bin/install
 
 WORKDIR /var/www/magento
 
 RUN usermod -u 1000 www-data
 RUN usermod -G 100 www-data
 
-ENTRYPOINT ["/usr/local/bin/environment"]
+#ENTRYPOINT ["/usr/local/bin/environment"]
 CMD ["bash"]
