@@ -71,5 +71,5 @@ WORKDIR /var/www/magento
 RUN usermod -u 1000 www-data
 RUN usermod -G 100 www-data
 
-#ENTRYPOINT ["/usr/local/bin/environment"]
-CMD ["bash"]
+ENTRYPOINT ["/usr/local/bin/environment"]
+#CMD ["bash"]

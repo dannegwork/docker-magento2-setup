@@ -7,3 +7,5 @@ auth.json
 src/*
 .docker/nginx/logs/
 .docker/rabbitmq/data
+.docker/elasticsearch/magento/data
+
