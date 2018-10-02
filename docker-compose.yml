@@ -57,6 +57,7 @@ services:
     links:
     - dbdata-m2
     volumes:
+    - ./.docker/mysql/conf/:/etc/mysql/mysql.conf/
     - ./.docker/database/data:/var/lib/mysql
     ports:
     - 3306
