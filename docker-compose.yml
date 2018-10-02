@@ -4,7 +4,7 @@ version: '2'
 services:
   server-magento:
     build: ./.docker/nginx
-    image: boxalino/m2-nginx:1.15
+    image: danneg/m2-nginx:1.15
     container_name: boxalino_m2_nginx
     volumes:
     - ./.docker/nginx/conf/nginx.conf:/etc/nginx/nginx.conf
@@ -17,25 +17,25 @@ services:
     - 443
     links:
     - php
-    - database
+    - database-m2
     - redis
     - memcached
     - rabbitmq
     tty: true
     environment:
-      SERVER_NAME: "m2.dev.local"
+      SERVER_NAME: "dev-m2.danneg.com"
     env_file:
     - ./.docker/nginx/.env
     - ./.env
 
   php:
     build: ./.docker/php
-    image: boxalino/m2-php:7.0.20
-    container_name: boxalino_m2_php7.0.20
+    image: danneg/m2-php:7.0.20
+    container_name: danneg_m2_php7.0.20
     volumes_from:
     - code-magento
     volumes:
-    - ./.docker/php/magento/conf/php.ini:/usr/local/etc/php/php.ini
+    - ./.docker/php/conf/php.ini:/usr/local/etc/php/php.ini
     - ./.docker/php/conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
     - ./.docker/php/conf/www.conf:/usr/local/etc/php-fpm.d/www.conf
     - ./.docker/php/conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
@@ -46,16 +46,18 @@ services:
     - code-magento
     - mailcatcher
     environment:
-      PHP_IDE_CONFIG: "serverName=dev-m2.boxalino.com"
+      PHP_IDE_CONFIG: "serverName=dev-m2.danneg.com"
 
-  database:
+  database-m2:
     build: ./.docker/mysql
-    image: boxalino-m2/m2-mysql:5.7.23
-    container_name: boxalino_m2_mysql5.7.23
+    image: danneg/m2-mysql:5.7
+    container_name: danneg_m2_mysql5.7
     volumes_from:
-    - dbdata-magento
+    - dbdata-m2
     links:
-    - dbdata-magento
+    - dbdata-m2
+    volumes:
+    - ./.docker/database/data:/var/lib/mysql
     ports:
     - 3306
     env_file:
@@ -63,26 +65,26 @@ services:
 
   redis:
     build: ./.docker/redis
-    image: boxalino/m2-redis:3.0.7
-    container_name: boxalino_m2_redis
+    image: danneg/m2-redis:3.0.7
+    container_name: danneg_m2_redis
     ports:
     - 6379
 
   memcached:
     build: ./.docker/memcached
-    image: boxalino/memcached:1.4.35
-    container_name: boxalino_m2_memcached
+    image: danneg/memcached:1.4.35
+    container_name: danneg_m2_memcached
     ports:
     - 11211
 
   magento:
     build: ./.docker/cli
-    image: boxalino/m2-cli:7.0.20
-    container_name: boxalino_m2_cli
+    image: danneg/m2-cli:7.0.20
+    container_name: danneg_m2_cli
     links:
     - code-magento
     - rabbitmq
-    - database
+    - database-m2
     - redis
     - memcached
     volumes_from:
@@ -98,62 +100,10 @@ services:
     - ./.docker/rabbitmq/.env
     - ./.env
 
-  elasticsearch-logs:
-    build: ./.docker/elasticsearch/logserver
-    image: boxalino/logs-elasticsearch:5.4.0
-    container_name: boxalino_logs_elasticsearch
-    volumes_from:
-    - data-es
-    - log-es
-    volumes:
-    - ./.docker/elasticsearch/logserver/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-    - ./.docker/elasticsearch/logserver/data:/var/data/elasticsearch/logserver
-    - ./.docker/elasticsearch/logserver/logs:/var/logs/elasticsearch/logserver
-    ports:
-    - 9201:9200
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    mem_limit: 2g
-    cap_add:
-    - IPC_LOCK
-    environment:
-      ES_JAVA_OPTS: "-Xms750m -Xmx750m"
-
-  elasticsearch-magento:
-    build: ./.docker/elasticsearch/magento
-    image: boxalino/m2-elasticsearch:2.4.6
-    container_name: boxalino_m2_elasticsearch
-    volumes_from:
-    - data-es
-    - log-es
-    volumes:
-    - ./.docker/elasticsearch/magento/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-    - ./.docker/elasticsearch/magento/data:/var/data/elasticsearch/magento
-    - ./.docker/elasticsearch/magento/logs:/var/logs/elasticsearch/magento
-    ports:
-    - 9200:9200
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    mem_limit: 2g
-    cap_add:
-    - IPC_LOCK
-    environment:
-      ES_JAVA_OPTS: "-Xms750m -Xmx750m"
-
   rabbitmq:
     build: ./.docker/rabbitmq
-    image: boxalino/rabbitmq:3.6.9
-    container_name: boxalino_rabbitmq
+    image: danneg/rabbitmq:3.6.9
+    container_name: danneg_rabbitmq
     ports:
     - 5672
     - 15672
@@ -161,59 +111,25 @@ services:
     env_file:
     - ./.docker/rabbitmq/.env
 
-  phpmyadmin:
-    build: ./.docker/phpmyadmin
-    image: boxalino/phpmyadmin:4.6
-    container_name: boxalino_m2_phpmyadmin
-    volumes_from:
-    - dbdata-magento
-    ports:
-    - 8080:80
-    env_file:
-    - ./.docker/phpmyadmin/.env
-
   mailcatcher:
     build: ./.docker/mailcatcher
-    container_name: boxalino_m2_mailcatcher
-    image: boxalino/m2-mailcatcher:0.6.4
+    container_name: danneg_m2_mailcatcher
+    image: danneg/m2-mailcatcher:0.6.4
     ports:
     - 1080:1080
     - 1025
 
-  dbdata-magento:
+  dbdata-m2:
     image: tianon/true
-    container_name: boxalino_m2_dbdata
+    container_name: danneg_m2_dbdata
     volumes:
     - /var/lib/mysql
 
   code-magento:
     build: ./.docker/volume
-    image: boxalino/m2-volume
-    container_name: boxalino_m2_volume
+    image: danneg/m2-volume
+    container_name: danneg_m2_volume
     volumes:
     - ./src/magento:/var/www/magento
     environment:
       SETUP_VOLUME: "/var/www/magento"
-
-  data-es:
-    image: tianon/true
-    container_name: boxalino_es_data
-    volumes:
-    - /var/data/elasticsearch
-
-  log-es:
-    image: tianon/true
-    container_name: boxalino_es_log
-    volumes:
-    - /var/logs/elasticsearch
-
-  kibana:
-    build: ./.docker/kibana
-    image: boxalino/kibana:5.5.2
-    container_name: boxalino_kibana
-    links:
-    - elasticsearch-logs
-    volumes:
-    - ./.docker/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml
-    ports:
-    - 5601:5601

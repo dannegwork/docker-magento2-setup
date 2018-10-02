@@ -63,7 +63,7 @@ RUN docker-php-ext-install \
 COPY ./conf/php.ini /usr/local/etc/php/conf.d/php.ini
 COPY ./conf/www.conf /usr/local/etc/php-fpm.d/www.conf
 COPY ./conf/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
-
+COPY ./conf/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 #Installing SSH2
 RUN pecl channel-update pecl.php.net
 RUN apt-get install -y git libssh2-1 libssh2-1-dev && \
