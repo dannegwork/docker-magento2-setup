@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Ensure our project (Magento or Symfony) directory exists
+mkdir -p $PROJECT_ROOT
+echo $PROJECT_ROOT
+
+# Configure composer
+[ ! -z "$COMPOSER_GITHUB_TOKEN" ] && \
+    composer config --global github-oauth.github.com $COMPOSER_GITHUB_TOKEN
+
+[ ! -z "$COMPOSER_MAGENTO_USERNAME" ] && \
+    composer config --global http-basic.repo.magento.com \
+       $COMPOSER_MAGENTO_USERNAME $COMPOSER_MAGENTO_PASSWORD
+
+exec "$@"
