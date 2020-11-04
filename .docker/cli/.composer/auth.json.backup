@@ -1,8 +1,8 @@
 {
   "http-basic": {
     "repo.magento.com": {
-      "username": "e5eff664f12f85dd74e4c12b71c8dab8",
-      "password": "fec524db4b19379b0e0ce897e6def6cc"
+      "username": "",
+      "password": ""
     }
   },
   "github-oauth": {
